@@ -66,6 +66,7 @@ class Persons extends Component {
         age={person.age}
         click={this.props.clicked.bind(this, index)}
         changed={event => this.props.changed(event, person.id)}
+        // authenticated={this.props.isAuthenticated}
       />
     ));
   }
