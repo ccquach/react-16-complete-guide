@@ -58,6 +58,7 @@ class Persons extends Component {
     return this.props.persons.map((person, index) => (
       <Person
         key={person.id}
+        position={index}
         name={person.name}
         age={person.age}
         click={this.props.clicked.bind(this, index)}
