@@ -67,7 +67,7 @@ class BurgerBuilder extends Component {
 
   purchaseHandler = () => {
     // toggle order summary modal
-    this.setState({ purchasing: !this.state.purchasing });
+    this.setState(prevState => ({ purchasing: !prevState.purchasing }));
   };
 
   purchaseContinueHandler = () => {
