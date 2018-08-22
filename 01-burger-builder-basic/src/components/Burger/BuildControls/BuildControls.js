@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import classes from './BuildControls.css';
 import BuildControl from './BuildControl/BuildControl';
@@ -13,8 +14,26 @@ const controls = [
 const BuildControls = props => (
   <div className={classes.BuildControls}>
     {controls.map(ctrl => (
-      <BuildControl key={ctrl.label} label={ctrl.label} />
+      <BuildControl
+        key={ctrl.label}
+        label={ctrl.label}
+        added={props.ingredientAdded.bind(this, ctrl.type)}
+        removed={props.ingredientRemoved.bind(this, ctrl.type)}
+        disabled={props.disabled[ctrl.type]}
+      />
     ))}
   </div>
 );
+
+BuildControls.propTypes = {
+  ingredientAdded: PropTypes.func.isRequired,
+  ingredientRemoved: PropTypes.func.isRequired,
+  disabled: PropTypes.shape({
+    salad: PropTypes.bool.isRequired,
+    bacon: PropTypes.bool.isRequired,
+    cheese: PropTypes.bool.isRequired,
+    meat: PropTypes.bool.isRequired
+  }).isRequired
+};
+
 export default BuildControls;
