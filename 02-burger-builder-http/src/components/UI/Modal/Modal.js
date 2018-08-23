@@ -40,7 +40,7 @@ class Modal extends Component {
 }
 
 Modal.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   show: PropTypes.bool.isRequired,
   modalClosed: PropTypes.func.isRequired
 };
