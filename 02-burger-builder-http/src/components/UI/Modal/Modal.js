@@ -11,7 +11,10 @@ class Modal extends Component {
   Not extending PureComponent because it would execute more checks than needed.
   */
   shouldComponentUpdate = (nextProps, nextState) => {
-    return nextProps.show !== this.props.show;
+    return (
+      nextProps.show !== this.props.show ||
+      nextProps.children !== this.props.children
+    );
   };
 
   componentWillUpdate = (nextProps, nextState) => {

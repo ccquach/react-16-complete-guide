@@ -25,7 +25,7 @@ class OrderSummary extends Component {
       <Auxiliary>
         <h3>Your Order</h3>
         <p>A delicious burger with the following ingredients:</p>
-        <ul>{ingredientsSummary}</ul>
+        <ul style={{ padding: '16px 32px' }}>{ingredientsSummary}</ul>
         <p>
           <strong>Total Price: ${this.props.price.toFixed(2)}</strong>
         </p>
