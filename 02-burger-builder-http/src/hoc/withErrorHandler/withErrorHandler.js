@@ -16,16 +16,31 @@ const withErrorHandler = (WrappedComponent, axios) => {
     */
     componentWillMount = () => {
       // clear error on http request
-      axios.interceptors.request.use(req => {
+      this.reqInterceptor = axios.interceptors.request.use(req => {
         this.setState({ err: null });
         return req;
       });
 
       // set error returned by response
-      axios.interceptors.response.use(
+      this.resInterceptor = axios.interceptors.response.use(
         res => res,
         err => this.setState({ err })
       );
+    };
+
+    /*
+    New interceptors created each time HOC called 
+    (wrapped around component), all added onto the same axios 
+    instance. Consider the number of interceptors created
+    when switching between pages and wrapped components
+    unmounted and mounted each time. We end up with 
+    a lot of dead interceptors that leak memory
+    (code that still runs but that's not required).
+    Clean up interceptors when wrapped component unmounts.
+    */
+    componentWillUnmount = () => {
+      axios.interceptors.request.eject(this.reqInterceptor);
+      axios.interceptors.response.eject(this.resInterceptor);
     };
 
     // dismiss (clear) error on backdrop click
