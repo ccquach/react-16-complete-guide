@@ -10,7 +10,27 @@ class FullPost extends Component {
   };
 
   componentDidMount = (prevProps, prevState) => {
-    console.log(this.props);
+    this.loadData();
+  };
+
+  /*
+  When using nested routes rendering FullPost on same page as Posts,
+  FullPost mounted once first Post clicked. However, it is never re-mounted
+  again after this point, so componentDidMount() never fetches data
+  on subsequent clicks. 
+
+  Route changes each time Post clicked, so props change, triggering
+  componentDidUpdate(), where we can then fetch data.
+  */
+  componentDidUpdate = (prevProps, prevState) => {
+    this.loadData();
+  };
+
+  /* 
+  Outsource GET request to function since nested routes require it to be 
+  called from two diff lifecycle methods
+  */
+  loadData = () => {
     // fetch data for selected Id if not null
     if (this.props.match.params.id) {
       /*
@@ -22,7 +42,7 @@ class FullPost extends Component {
       if (
         !this.state.loadedPost ||
         (this.state.loadedPost &&
-          this.state.loadedPost.id !== this.props.match.params.id)
+          this.state.loadedPost.id !== +this.props.match.params.id) // convert match.params.id to number for strict equality comparison
       ) {
         axios
           .get(`/posts/${this.props.match.params.id}`)
