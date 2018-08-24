@@ -9,9 +9,10 @@ class FullPost extends Component {
     loadedPost: null
   };
 
-  componentDidUpdate = (prevProps, prevState) => {
+  componentDidMount = (prevProps, prevState) => {
+    console.log(this.props);
     // fetch data for selected Id if not null
-    if (this.props.id) {
+    if (this.props.match.params.id) {
       /*
       Calling setState inside componentDidUpdate causes infinite loop, so
       if post loaded, check that props id differs from current loaded
@@ -20,24 +21,28 @@ class FullPost extends Component {
       */
       if (
         !this.state.loadedPost ||
-        (this.state.loadedPost && this.state.loadedPost.id !== this.props.id)
+        (this.state.loadedPost &&
+          this.state.loadedPost.id !== this.props.match.params.id)
       ) {
         axios
-          .get(`/posts/${this.props.id}`)
+          .get(`/posts/${this.props.match.params.id}`)
           .then(res => this.setState({ loadedPost: res.data }));
       }
     }
   };
 
   deletePostHandler = () => {
-    axios.delete(`/posts/${this.props.id}`).then(res => console.log(res));
+    axios
+      .delete(`/posts/${this.props.match.params.id}`)
+      .then(res => console.log(res));
   };
 
   render() {
     const loadedPost = this.state.loadedPost;
     let post = <p style={{ textAlign: 'center' }}>Please select a Post!</p>;
     // on first render, we get Id but fetch not completed yet
-    if (this.props.id) post = <p style={{ textAlign: 'center' }}>Loading...</p>;
+    if (this.props.match.params.id)
+      post = <p style={{ textAlign: 'center' }}>Loading...</p>;
     // component re-rendered with updated stated once fetch completed
     if (loadedPost) {
       post = (
@@ -57,7 +62,7 @@ class FullPost extends Component {
 }
 
 FullPost.propTypes = {
-  id: PropTypes.number
+  match: PropTypes.object.isRequired
 };
 
 export default FullPost;
