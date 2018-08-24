@@ -48,6 +48,8 @@ class Blog extends Component {
             <Route path="/new-post" component={NewPost} />
           ) : null}
           <Route path="/posts" component={Posts} />
+          {/* 404: Page not found handler */}
+          {/* <Route render={() => <h1>Page Not Found</h1>} /> */}
           <Redirect from="/" to="/posts" />
         </Switch>
       </div>
