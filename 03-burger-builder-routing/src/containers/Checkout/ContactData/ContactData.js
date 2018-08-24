@@ -23,7 +23,7 @@ class ContactData extends Component {
     // TODO: order object will contain form data
     const order = {
       ingredients: this.props.ingredients,
-      price: this.props.price,
+      price: this.props.price.toFixed(2),
       customer: {
         name: 'Max Schwarzmuller',
         address: {
