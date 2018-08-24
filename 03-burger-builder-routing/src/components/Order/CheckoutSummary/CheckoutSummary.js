@@ -12,10 +12,10 @@ const CheckoutSummary = props => {
       <div style={{ width: '100%', margin: 'auto' }}>
         <Burger ingredients={props.ingredients} />
       </div>
-      <Button btnType="Danger" clicked>
+      <Button btnType="Danger" clicked={props.checkoutCancelled}>
         CANCEL
       </Button>
-      <Button btnType="Success" clicked>
+      <Button btnType="Success" clicked={props.checkoutContinued}>
         CONTINUE
       </Button>
     </div>
@@ -28,7 +28,9 @@ CheckoutSummary.propTypes = {
     bacon: PropTypes.number.isRequired,
     cheese: PropTypes.number.isRequired,
     meat: PropTypes.number.isRequired
-  }).isRequired
+  }).isRequired,
+  checkoutCancelled: PropTypes.func.isRequired,
+  checkoutContinued: PropTypes.func.isRequired
 };
 
 export default CheckoutSummary;
