@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import './Post.css';
 import Post from '../../../components/Post/Post';
@@ -25,13 +25,22 @@ class Posts extends Component {
       });
   };
 
+  postSelectedHandler = id => {
+    this.props.history.push(`/${id}`);
+  };
+
   render() {
     let posts = <p style={{ textAlign: 'center' }}>Something went wrong!</p>;
     if (!this.state.error) {
       posts = this.state.posts.map(post => (
-        <Link to={`/${post.id}`} key={post.id}>
-          <Post title={post.title} author={post.author} />
-        </Link>
+        // <Link to={`/${post.id}`} key={post.id}>
+        <Post
+          key={post.id}
+          title={post.title}
+          author={post.author}
+          clicked={this.postSelectedHandler.bind(this, post.id)}
+        />
+        // </Link>
       ));
     }
     return <section className="Posts">{posts}</section>;
