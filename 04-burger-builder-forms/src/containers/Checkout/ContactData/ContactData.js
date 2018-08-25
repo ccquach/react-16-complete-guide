@@ -14,6 +14,7 @@ class ContactData extends Component {
         elementType: 'input',
         elementConfig: {
           type: 'text',
+          name: 'name',
           placeholder: 'Your Name'
         },
         value: '',
@@ -23,6 +24,7 @@ class ContactData extends Component {
         elementType: 'input',
         elementConfig: {
           type: 'text',
+          name: 'street',
           placeholder: 'Street'
         },
         value: '',
@@ -32,6 +34,7 @@ class ContactData extends Component {
         elementType: 'input',
         elementConfig: {
           type: 'text',
+          name: 'zipCode',
           placeholder: 'Zip Code'
         },
         value: '',
@@ -41,6 +44,7 @@ class ContactData extends Component {
         elementType: 'input',
         elementConfig: {
           type: 'text',
+          name: 'country',
           placeholder: 'Country'
         },
         value: '',
@@ -50,6 +54,7 @@ class ContactData extends Component {
         elementType: 'input',
         elementConfig: {
           type: 'email',
+          name: 'email',
           placeholder: 'Your Email'
         },
         value: '',
@@ -58,6 +63,7 @@ class ContactData extends Component {
       deliveryMethod: {
         elementType: 'select',
         elementConfig: {
+          name: 'deliveryMethod',
           options: [
             { value: 'fastest', displayValue: 'Fastest' },
             { value: 'cheapest', displayValue: 'Cheapest' }
@@ -92,6 +98,15 @@ class ContactData extends Component {
       });
   };
 
+  inputChangedHandler = e => {
+    const updatedOrderForm = { ...this.state.orderForm };
+    // don't need to create complete deep clone; only to level we need to modify
+    const updatedFormElement = { ...updatedOrderForm[e.target.name] };
+    updatedFormElement.value = e.target.value;
+    updatedOrderForm[e.target.name] = updatedFormElement;
+    this.setState({ orderForm: updatedOrderForm });
+  };
+
   render() {
     // create an array from orderForm object
     const formElementsArray = [];
@@ -105,7 +120,11 @@ class ContactData extends Component {
     let form = (
       <form>
         {formElementsArray.map(formElement => (
-          <Input key={formElement.id} {...formElement.config} />
+          <Input
+            key={formElement.id}
+            {...formElement.config}
+            changed={this.inputChangedHandler}
+          />
         ))}
         <Button btnType="Success" clicked={this.orderHandler}>
           ORDER
