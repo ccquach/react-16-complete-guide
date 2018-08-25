@@ -6,7 +6,13 @@ import classes from './Input.css';
 const Input = props => {
   let inputElement = null;
   const inputClasses = [classes.InputElement];
-  if (props.invalid && props.shouldValidate && props.touched)
+  /*
+  Input should only be marked as invalid if property:
+    - Is invalid
+    - Has validation rules
+    - Has been touched 
+  */
+  if (!props.valid && props.validation && props.touched)
     inputClasses.push(classes.Invalid);
 
   switch (props.elementType) {
@@ -69,10 +75,10 @@ Input.propTypes = {
   elementType: PropTypes.string.isRequired,
   elementConfig: PropTypes.object.isRequired,
   label: PropTypes.string.isRequired,
-  changed: PropTypes.func.isRequired,
-  invalid: PropTypes.bool.isRequired,
-  shouldValidate: PropTypes.bool.isRequired,
-  touched: PropTypes.func.isRequired
+  value: PropTypes.string,
+  validation: PropTypes.object.isRequired,
+  valid: PropTypes.bool.isRequired,
+  changed: PropTypes.func.isRequired
 };
 
 export default Input;

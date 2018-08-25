@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from '../../../axios-orders';
 
@@ -118,7 +119,7 @@ class ContactData extends Component {
     }
     // build complete order object
     const order = {
-      ingredients: this.props.ingredients,
+      ingredients: this.props.ings,
       price: this.props.price.toFixed(2),
       orderData: formData
     };
@@ -192,9 +193,6 @@ class ContactData extends Component {
             key={formElement.id}
             {...formElement.config}
             changed={this.inputChangedHandler}
-            invalid={!formElement.config.valid}
-            touched={formElement.config.touched}
-            shouldValidate={formElement.config.validation}
           />
         ))}
         <Button btnType="Success" disabled={!this.state.formIsValid}>
@@ -215,7 +213,7 @@ class ContactData extends Component {
 }
 
 ContactData.propTypes = {
-  ingredients: PropTypes.shape({
+  ings: PropTypes.shape({
     salad: PropTypes.number.isRequired,
     bacon: PropTypes.number.isRequired,
     cheese: PropTypes.number.isRequired,
@@ -224,4 +222,9 @@ ContactData.propTypes = {
   price: PropTypes.number.isRequired
 };
 
-export default ContactData;
+const mapStateToProps = state => ({
+  ings: state.ingredients,
+  price: state.totalPrice
+});
+
+export default connect(mapStateToProps)(ContactData);
