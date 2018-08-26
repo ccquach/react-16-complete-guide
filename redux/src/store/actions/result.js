@@ -7,8 +7,10 @@ const saveResult = result => ({
 
 export const storeResult = result => {
   // setTimeout to simulate reaching out to server prior to dispatching action
-  return dispatch => {
+  return (dispatch, getState) => {
     setTimeout(() => {
+      const oldCounter = getState().ctr.counter;
+      console.log(oldCounter);
       dispatch(saveResult(result));
     }, 2000);
   };
