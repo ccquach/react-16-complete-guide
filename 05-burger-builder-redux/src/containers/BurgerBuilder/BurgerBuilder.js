@@ -13,8 +13,7 @@ import * as actions from '../../store/actions';
 
 class BurgerBuilder extends Component {
   state = {
-    purchasing: false,
-    error: false
+    purchasing: false
   };
 
   componentDidMount = () => {
