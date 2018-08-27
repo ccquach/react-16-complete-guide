@@ -17,10 +17,11 @@ const purchaseBurgerStart = () => ({
   type: actionTypes.PURCHASE_BURGER_START
 });
 
-export const purchaseBurger = orderData => dispatch => {
+export const purchaseBurger = orderData => (dispatch, getState) => {
   dispatch(purchaseBurgerStart());
+  const token = getState().auth.token;
   axios
-    .post('/orders.json', orderData)
+    .post(`/orders.json?auth=${token}`, orderData)
     .then(res => dispatch(purchaseBurgerSuccess(res.data.name, orderData)))
     .catch(err => dispatch(purchaseBurgerFail(err)));
 };
@@ -44,10 +45,11 @@ const fetchOrderStart = () => ({
   type: actionTypes.FETCH_ORDERS_START
 });
 
-export const fetchOrders = () => dispatch => {
+export const fetchOrders = () => (dispatch, getState) => {
   dispatch(fetchOrderStart());
+  const token = getState().auth.token;
   axios
-    .get('/orders.json')
+    .get(`/orders.json?auth=${token}`)
     .then(res => {
       // build array of orders from data object returned by Firebase
       const fetchedOrders = [];
