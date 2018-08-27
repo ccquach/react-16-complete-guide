@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import classes from './Auth.css';
 import Input from '../../components/UI/Input/Input';
@@ -15,35 +16,40 @@ class Auth extends Component {
         elementConfig: {
           type: 'email',
           name: 'email',
-          placeholder: 'Email Address'
+          placeholder: 'Email Address',
         },
         value: '',
         label: 'Email',
         validation: {
           required: true,
-          isEmail: true
+          isEmail: true,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
       password: {
         elementType: 'input',
         elementConfig: {
           type: 'password',
           name: 'password',
-          placeholder: 'Password'
+          placeholder: 'Password',
         },
         value: '',
         label: 'Password',
         validation: {
           required: true,
-          minLength: 6
+          minLength: 6,
         },
         valid: false,
-        touched: false
-      }
+        touched: false,
+      },
     },
-    isSignup: true
+    isSignup: true,
+  };
+
+  componentDidMount = () => {
+    if (!this.props.buildingBurger && this.props.authRedirectPath !== '/')
+      this.props.onSetAuthRedirectPath();
   };
 
   checkValidity = (value, rules) => {
@@ -77,8 +83,8 @@ class Auth extends Component {
         ...controls[targetName],
         value: targetValue,
         valid: this.checkValidity(targetValue, controls[targetName].validation),
-        touched: true
-      }
+        touched: true,
+      },
     };
     this.setState({ controls: updatedControls });
   };
@@ -95,7 +101,7 @@ class Auth extends Component {
 
   switchAuthModeHandler = () => {
     this.setState(prevState => ({
-      isSignup: !prevState.isSignup
+      isSignup: !prevState.isSignup,
     }));
   };
 
@@ -105,7 +111,7 @@ class Auth extends Component {
     for (let key in this.state.controls) {
       formElementsArray.push({
         id: key,
-        config: this.state.controls[key]
+        config: this.state.controls[key],
       });
     }
     // map form control elements
@@ -125,8 +131,13 @@ class Auth extends Component {
         <p style={{ color: 'red' }}>Error! {this.props.error.message}</p>
       );
 
+    let authRedirect = null;
+    if (this.props.isAuthenticated)
+      authRedirect = <Redirect to={this.props.authRedirectPath} />;
+
     return (
       <div className={classes.Auth}>
+        {authRedirect}
         <h2 style={{ textAlign: 'center', margin: '2rem 0' }}>
           {this.state.isSignup ? 'Sign up!' : 'Welcome back!'}
         </h2>
@@ -145,12 +156,16 @@ class Auth extends Component {
 
 const mapStateToProps = state => ({
   loading: state.auth.loading,
-  error: state.auth.error
+  error: state.auth.error,
+  isAuthenticated: !!state.auth.token,
+  buildingBurger: state.burgerBuilder.building,
+  authRedirectPath: state.auth.authRedirectPath,
 });
 
 const mapDispatchToProps = dispatch => ({
   onAuth: (email, password, isSignup) =>
-    dispatch(actions.auth(email, password, isSignup))
+    dispatch(actions.auth(email, password, isSignup)),
+  onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
 });
 
 export default connect(

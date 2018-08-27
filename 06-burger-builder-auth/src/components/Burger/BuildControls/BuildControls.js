@@ -8,7 +8,7 @@ const controls = [
   { label: 'Salad', type: 'salad' },
   { label: 'Bacon', type: 'bacon' },
   { label: 'Cheese', type: 'cheese' },
-  { label: 'Meat', type: 'meat' }
+  { label: 'Meat', type: 'meat' },
 ];
 
 const BuildControls = props => (
@@ -30,7 +30,7 @@ const BuildControls = props => (
       disabled={!props.purchasable}
       onClick={props.ordered}
     >
-      ORDER NOW
+      {props.isAuth ? 'ORDER NOW' : 'SIGN UP TO ORDER'}
     </button>
   </div>
 );
@@ -42,11 +42,12 @@ BuildControls.propTypes = {
     salad: PropTypes.bool.isRequired,
     bacon: PropTypes.bool.isRequired,
     cheese: PropTypes.bool.isRequired,
-    meat: PropTypes.bool.isRequired
+    meat: PropTypes.bool.isRequired,
   }).isRequired,
   price: PropTypes.number.isRequired,
   purchasable: PropTypes.bool.isRequired,
-  ordered: PropTypes.func.isRequired
+  ordered: PropTypes.func.isRequired,
+  isAuth: PropTypes.bool.isRequired,
 };
 
 export default BuildControls;

@@ -5,22 +5,22 @@ const BASE_URL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty';
 const API_KEY = 'AIzaSyBZlRboWPOjGRR0HxFF1li2Q4tqNfieGf8';
 
 const authStart = () => ({
-  type: actionTypes.AUTH_START
+  type: actionTypes.AUTH_START,
 });
 
 const authSuccess = (idToken, localId) => ({
   type: actionTypes.AUTH_SUCCESS,
   idToken,
-  userId: localId
+  userId: localId,
 });
 
 const authFail = error => ({
   type: actionTypes.AUTH_FAIL,
-  error
+  error,
 });
 
 export const authLogout = () => ({
-  type: actionTypes.AUTH_LOGOUT
+  type: actionTypes.AUTH_LOGOUT,
 });
 
 const checkAuthTimeout = expirationTime => dispatch => {
@@ -48,3 +48,8 @@ export const auth = (email, password, isSignup) => dispatch => {
       dispatch(authFail(err.response.data.error));
     });
 };
+
+export const setAuthRedirectPath = path => ({
+  type: actionTypes.SET_AUTH_REDIRECT_PATH,
+  path,
+});
