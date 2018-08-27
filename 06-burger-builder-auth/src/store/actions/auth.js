@@ -19,9 +19,12 @@ const authFail = error => ({
   error,
 });
 
-export const authLogout = () => ({
-  type: actionTypes.AUTH_LOGOUT,
-});
+export const authLogout = () => {
+  localStorage.clear();
+  return {
+    type: actionTypes.AUTH_LOGOUT,
+  };
+};
 
 const checkAuthTimeout = expirationTime => dispatch => {
   setTimeout(() => {
@@ -40,6 +43,9 @@ export const auth = (email, password, isSignup) => dispatch => {
     .then(res => {
       console.log(res);
       const { idToken, localId, expiresIn } = res.data;
+      localStorage.setItem('token', idToken);
+      const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+      localStorage.setItem('expirationDate', expirationDate);
       dispatch(authSuccess(idToken, localId));
       dispatch(checkAuthTimeout(expiresIn));
     })
@@ -53,3 +59,25 @@ export const setAuthRedirectPath = path => ({
   type: actionTypes.SET_AUTH_REDIRECT_PATH,
   path,
 });
+
+export const authCheckState = () => dispatch => {
+  const token = localStorage.getItem('token');
+  if (!token) dispatch(authLogout());
+  else {
+    /* 
+    localStorage returns items as strings, so need to convert expiration date 
+    to date type in order to make valid comparisons
+    */
+    const expirationDate = new Date(localStorage.getItem('expirationDate'));
+    if (expirationDate > new Date()) {
+      axios
+        .post(`${BASE_URL}/getAccountInfo?key=${API_KEY}`, { idToken: token })
+        .then(res => {
+          const localId = res.data.users[0].localId;
+          dispatch(authSuccess(token, localId));
+          dispatch(checkAuthTimeout((expirationDate - new Date()) / 1000));
+        })
+        .catch(err => console.log(err));
+    } else dispatch(authLogout());
+  }
+};
