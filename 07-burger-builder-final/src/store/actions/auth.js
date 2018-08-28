@@ -2,7 +2,7 @@ import * as actionTypes from './actionTypes';
 import axios from 'axios';
 
 const BASE_URL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty';
-const API_KEY = 'AIzaSyBZlRboWPOjGRR0HxFF1li2Q4tqNfieGf8';
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 const authStart = () => ({
   type: actionTypes.AUTH_START,
