@@ -8,9 +8,9 @@ import Button from '../../UI/Button/Button';
 This could be functional component. Converted to container for debugging purposes.
 */
 class OrderSummary extends Component {
-  componentWillUpdate = () => {
-    console.log(`[OrderSummary] willUpdate`);
-  };
+  // componentWillUpdate = () => {
+  //   console.log(`[OrderSummary] willUpdate`);
+  // };
 
   render() {
     const ingredientsSummary = Object.keys(this.props.ingredients).map(
@@ -46,11 +46,11 @@ OrderSummary.propTypes = {
     salad: PropTypes.number.isRequired,
     bacon: PropTypes.number.isRequired,
     cheese: PropTypes.number.isRequired,
-    meat: PropTypes.number.isRequired
+    meat: PropTypes.number.isRequired,
   }).isRequired,
   price: PropTypes.number.isRequired,
   purchaseCanceled: PropTypes.func.isRequired,
-  purchaseContinued: PropTypes.func.isRequired
+  purchaseContinued: PropTypes.func.isRequired,
 };
 
 export default OrderSummary;

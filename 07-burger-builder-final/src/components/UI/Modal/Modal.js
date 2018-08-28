@@ -17,9 +17,9 @@ class Modal extends Component {
     );
   };
 
-  componentWillUpdate = (nextProps, nextState) => {
-    console.log(`[Modal] willUpdate`);
-  };
+  // componentWillUpdate = (nextProps, nextState) => {
+  //   console.log(`[Modal] willUpdate`);
+  // };
 
   render() {
     return (
@@ -29,7 +29,7 @@ class Modal extends Component {
           className={classes.Modal}
           style={{
             transform: this.props.show ? 'translateY(0)' : 'translateY(-100vh)',
-            opacity: this.props.show ? 1 : 0
+            opacity: this.props.show ? 1 : 0,
           }}
         >
           {this.props.children}
@@ -42,7 +42,7 @@ class Modal extends Component {
 Modal.propTypes = {
   children: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
   show: PropTypes.bool.isRequired,
-  modalClosed: PropTypes.func.isRequired
+  modalClosed: PropTypes.func.isRequired,
 };
 
 export default Modal;
