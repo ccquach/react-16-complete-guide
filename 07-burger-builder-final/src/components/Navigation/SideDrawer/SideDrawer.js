@@ -14,7 +14,7 @@ const SideDrawer = props => {
   return (
     <Auxiliary>
       <Backdrop clicked={props.closed} show={props.open} />
-      <div className={attachedClasses}>
+      <div className={attachedClasses} onClick={props.closed}>
         <div className={classes.Logo}>
           <Logo />
         </div>
@@ -29,7 +29,7 @@ const SideDrawer = props => {
 SideDrawer.propTypes = {
   closed: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  isAuth: PropTypes.bool.isRequired
+  isAuth: PropTypes.bool.isRequired,
 };
 
 export default SideDrawer;
