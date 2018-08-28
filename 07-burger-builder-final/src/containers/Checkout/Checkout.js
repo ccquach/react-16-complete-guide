@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import asyncComponent from '../../hoc/asyncComponent/asyncComponent';
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
-import ContactData from './ContactData/ContactData';
+
+const asyncContactData = asyncComponent(() =>
+  import('./ContactData/ContactData')
+);
 
 class Checkout extends Component {
   checkoutCancelledHandler = () => {
@@ -32,7 +36,7 @@ class Checkout extends Component {
           />
           <Route
             path={`${this.props.match.path}/contact-data`}
-            component={ContactData}
+            component={asyncContactData}
           />
         </div>
       );
@@ -43,7 +47,7 @@ class Checkout extends Component {
 
 const mapStateToProps = state => ({
   ings: state.burgerBuilder.ingredients,
-  purchased: state.order.purchased
+  purchased: state.order.purchased,
 });
 
 export default connect(mapStateToProps)(Checkout);
