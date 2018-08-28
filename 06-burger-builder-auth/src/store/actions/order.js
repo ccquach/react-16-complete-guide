@@ -5,58 +5,60 @@ import axios from '../../axios-orders';
 const purchaseBurgerSuccess = (orderId, orderData) => ({
   type: actionTypes.PURCHASE_BURGER_SUCCESS,
   orderId,
-  orderData
+  orderData,
 });
 
 const purchaseBurgerFail = error => ({
   type: actionTypes.PURCHASE_BURGER_FAIL,
-  error
+  error,
 });
 
 const purchaseBurgerStart = () => ({
-  type: actionTypes.PURCHASE_BURGER_START
+  type: actionTypes.PURCHASE_BURGER_START,
 });
 
 export const purchaseBurger = orderData => (dispatch, getState) => {
   dispatch(purchaseBurgerStart());
-  const token = getState().auth.token;
+  const { token, userId } = getState().auth;
   axios
-    .post(`/orders.json?auth=${token}`, orderData)
+    .post(`/orders.json?auth=${token}`, { ...orderData, userId })
     .then(res => dispatch(purchaseBurgerSuccess(res.data.name, orderData)))
     .catch(err => dispatch(purchaseBurgerFail(err)));
 };
 
 export const purchaseInit = () => ({
-  type: actionTypes.PURCHASE_INIT
+  type: actionTypes.PURCHASE_INIT,
 });
 
 // Fetch orders
 const fetchOrdersSuccess = orders => ({
   type: actionTypes.FETCH_ORDERS_SUCCESS,
-  orders
+  orders,
 });
 
 const fetchOrdersFail = error => ({
   type: actionTypes.FETCH_ORDERS_FAIL,
-  error
+  error,
 });
 
 const fetchOrderStart = () => ({
-  type: actionTypes.FETCH_ORDERS_START
+  type: actionTypes.FETCH_ORDERS_START,
 });
 
 export const fetchOrders = () => (dispatch, getState) => {
   dispatch(fetchOrderStart());
-  const token = getState().auth.token;
+  const { token, userId } = getState().auth;
+  const queryParams = `auth=${token}&orderBy="userId"&equalTo="${userId}"`;
+  console.log(queryParams);
   axios
-    .get(`/orders.json?auth=${token}`)
+    .get(`/orders.json?${queryParams}`)
     .then(res => {
       // build array of orders from data object returned by Firebase
       const fetchedOrders = [];
       for (let key in res.data) {
         fetchedOrders.push({
           ...res.data[key],
-          id: key
+          id: key,
         });
       }
       dispatch(fetchOrdersSuccess(fetchedOrders));
