@@ -7,6 +7,7 @@ import classes from './ContactData.css';
 import Button from '../../../components/UI/Button/Button';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
+import * as utilities from '../../../utility';
 import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actions from '../../../store/actions';
 
@@ -18,77 +19,78 @@ class ContactData extends Component {
         elementConfig: {
           type: 'text',
           name: 'name',
-          placeholder: 'Your Name'
+          placeholder: 'Your Name',
         },
         value: '',
         label: 'Name',
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
       street: {
         elementType: 'input',
         elementConfig: {
           type: 'text',
           name: 'street',
-          placeholder: 'Street'
+          placeholder: 'Street',
         },
         value: '',
         label: 'Street',
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
       zipCode: {
         elementType: 'input',
         elementConfig: {
           type: 'text',
           name: 'zipCode',
-          placeholder: 'Zip Code'
+          placeholder: 'Zip Code',
         },
         value: '',
         label: 'Zip Code',
         validation: {
           required: true,
           minLength: 5,
-          maxLength: 5
+          maxLength: 5,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
       country: {
         elementType: 'input',
         elementConfig: {
           type: 'text',
           name: 'country',
-          placeholder: 'Country'
+          placeholder: 'Country',
         },
         value: '',
         label: 'Country',
         validation: {
-          required: true
+          required: true,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
       email: {
         elementType: 'input',
         elementConfig: {
           type: 'email',
           name: 'email',
-          placeholder: 'Your Email'
+          placeholder: 'Your Email',
         },
         value: '',
         label: 'Email',
         validation: {
-          required: true
+          required: true,
+          isEmail: true,
         },
         valid: false,
-        touched: false
+        touched: false,
       },
       deliveryMethod: {
         elementType: 'select',
@@ -96,16 +98,16 @@ class ContactData extends Component {
           name: 'deliveryMethod',
           options: [
             { value: 'fastest', displayValue: 'Fastest' },
-            { value: 'cheapest', displayValue: 'Cheapest' }
-          ]
+            { value: 'cheapest', displayValue: 'Cheapest' },
+          ],
         },
         value: 'fastest',
         label: 'Delivery Method',
         validation: {},
-        valid: true
-      }
+        valid: true,
+      },
     },
-    formIsValid: false
+    formIsValid: false,
   };
 
   orderHandler = e => {
@@ -121,44 +123,19 @@ class ContactData extends Component {
     const order = {
       ingredients: this.props.ings,
       price: this.props.price.toFixed(2),
-      orderData: formData
+      orderData: formData,
     };
     // send POST request
     this.props.onOrderBurger(order);
   };
 
-  checkValidity = (value, rules) => {
-    let isValid = true;
-    // return true if no validation rules defined for input
-    if (!rules) return true;
-
-    if (rules.required) isValid = value.trim() !== '' && isValid;
-    if (rules.minLength) isValid = value.length >= rules.minLength && isValid;
-    if (rules.maxLength) isValid = value.length <= rules.maxLength && isValid;
-
-    if (rules.isEmail) {
-      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-      isValid = pattern.test(value) && isValid;
-    }
-
-    if (rules.isNumeric) {
-      const pattern = /^\d+$/;
-      isValid = pattern.test(value) && isValid;
-    }
-    return isValid;
-  };
-
   inputChangedHandler = e => {
-    const updatedOrderForm = { ...this.state.orderForm };
-    // don't need to create complete deep clone; only to level we need to modify
-    const updatedFormElement = { ...updatedOrderForm[e.target.name] };
-    updatedFormElement.value = e.target.value;
-    updatedFormElement.valid = this.checkValidity(
-      updatedFormElement.value,
-      updatedFormElement.validation
+    const updatedOrderForm = utilities.getUpdatedForm(
+      this.state.orderForm,
+      e.target.name,
+      e.target.value,
+      utilities.checkValidity
     );
-    updatedFormElement.touched = true;
-    updatedOrderForm[e.target.name] = updatedFormElement;
 
     // loop through input valid properties to determine when to disable Submit button
     let formIsValid = true;
@@ -168,7 +145,7 @@ class ContactData extends Component {
 
     this.setState({
       orderForm: updatedOrderForm,
-      formIsValid
+      formIsValid,
     });
   };
 
@@ -178,7 +155,7 @@ class ContactData extends Component {
     for (let key in this.state.orderForm) {
       formElementsArray.push({
         id: key,
-        config: this.state.orderForm[key]
+        config: this.state.orderForm[key],
       });
     }
 
@@ -213,19 +190,19 @@ ContactData.propTypes = {
     salad: PropTypes.number.isRequired,
     bacon: PropTypes.number.isRequired,
     cheese: PropTypes.number.isRequired,
-    meat: PropTypes.number.isRequired
+    meat: PropTypes.number.isRequired,
   }).isRequired,
-  price: PropTypes.number.isRequired
+  price: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = state => ({
   ings: state.burgerBuilder.ingredients,
   price: state.burgerBuilder.totalPrice,
-  loading: state.order.loading
+  loading: state.order.loading,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onOrderBurger: orderData => dispatch(actions.purchaseBurger(orderData))
+  onOrderBurger: orderData => dispatch(actions.purchaseBurger(orderData)),
 });
 
 export default connect(
