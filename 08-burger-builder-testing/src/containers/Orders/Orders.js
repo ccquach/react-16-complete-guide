@@ -7,7 +7,7 @@ import Order from '../../components/Order/Order';
 import * as actions from '../../store/actions';
 import Spinner from '../../components/UI/Spinner/Spinner';
 
-class Orders extends Component {
+export class Orders extends Component {
   componentDidMount = () => {
     this.props.onFetchOrders();
   };
@@ -29,11 +29,11 @@ class Orders extends Component {
 
 const mapStateToProps = state => ({
   orders: state.order.orders,
-  loading: state.order.loading
+  loading: state.order.loading,
 });
 
 const mapDispatchToProps = dispatch => ({
-  onFetchOrders: () => dispatch(actions.fetchOrders())
+  onFetchOrders: () => dispatch(actions.fetchOrders()),
 });
 
 export default connect(

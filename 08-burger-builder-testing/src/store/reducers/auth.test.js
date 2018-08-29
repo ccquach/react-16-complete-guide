@@ -16,7 +16,18 @@ describe('auth reducer', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
   });
 
-  it('should store the token upon login', () => {
+  it('should start loading at authentication start', () => {
+    expect(
+      reducer(initialState, {
+        type: actionTypes.AUTH_START,
+      })
+    ).toEqual({
+      ...initialState,
+      loading: true,
+    });
+  });
+
+  it('should store the token and stop loading upon login', () => {
     expect(
       reducer(initialState, {
         type: actionTypes.AUTH_SUCCESS,
@@ -27,6 +38,45 @@ describe('auth reducer', () => {
       ...initialState,
       token: 'some-token',
       userId: 'some-user-id',
+      loading: false,
+    });
+  });
+
+  it('should store an error and stop loading if login fails', () => {
+    expect(
+      reducer(initialState, {
+        type: actionTypes.AUTH_FAIL,
+        error: '',
+      })
+    ).toEqual({
+      ...initialState,
+      error: '',
+      loading: false,
+    });
+  });
+
+  it('should clear the token and user id upon logout', () => {
+    expect(
+      reducer(
+        {
+          ...initialState,
+          token: 'some-token',
+          userId: 'some-user-id',
+        },
+        { type: actionTypes.AUTH_LOGOUT }
+      )
+    ).toEqual(initialState);
+  });
+
+  it('should update the authentication redirect path', () => {
+    expect(
+      reducer(initialState, {
+        type: actionTypes.SET_AUTH_REDIRECT_PATH,
+        path: '/testing',
+      })
+    ).toEqual({
+      ...initialState,
+      authRedirectPath: '/testing',
     });
   });
 });

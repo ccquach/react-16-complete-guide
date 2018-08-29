@@ -9,7 +9,7 @@ const asyncContactData = asyncComponent(() =>
   import('./ContactData/ContactData')
 );
 
-class Checkout extends Component {
+export class Checkout extends Component {
   checkoutCancelledHandler = () => {
     // Return to burger builder page
     this.props.history.goBack();

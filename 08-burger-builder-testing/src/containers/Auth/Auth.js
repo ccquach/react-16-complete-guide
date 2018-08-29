@@ -9,7 +9,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import * as utilities from '../../utility';
 import * as actions from '../../store/actions';
 
-class Auth extends Component {
+export class Auth extends Component {
   state = {
     controls: {
       email: {
