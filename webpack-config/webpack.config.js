@@ -4,10 +4,11 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
+  mode: 'development',
   /*
   Source map generated for browser debugging
   */
-  devTool: 'cheap-module-eval-source-map',
+  devtool: 'cheap-module-eval-source-map',
   entry: './src/index.js',
   output: {
     /* 
