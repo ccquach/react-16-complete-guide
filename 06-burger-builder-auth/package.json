@@ -1,5 +1,5 @@
 {
-  "name": "01-burger-builder-basic",
+  "name": "06-burger-builder-auth",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

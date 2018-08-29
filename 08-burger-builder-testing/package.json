@@ -1,5 +1,5 @@
 {
-  "name": "01-burger-builder-basic",
+  "name": "08-burger-builder-testing",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,6 +16,8 @@
     "css-loader": "0.28.7",
     "dotenv": "4.0.0",
     "dotenv-expand": "4.2.0",
+    "enzyme": "^3.5.0",
+    "enzyme-adapter-react-16": "^1.3.0",
     "eslint": "4.10.0",
     "eslint-config-react-app": "^2.1.0",
     "eslint-loader": "1.9.0",
@@ -38,6 +40,7 @@
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
+    "react-test-renderer": "^16.4.2",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "resolve": "1.6.0",
@@ -95,5 +98,8 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "devDependencies": {
+    "jest-each": "^23.5.0"
   }
 }
