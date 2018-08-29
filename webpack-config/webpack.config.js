@@ -4,6 +4,9 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
+  /*
+  Source map generated for browser debugging
+  */
   devTool: 'cheap-module-eval-source-map',
   entry: './src/index.js',
   output: {
@@ -72,6 +75,16 @@ module.exports = {
             },
           },
         ],
+      },
+      /*
+      Options defined as query parameters so that they're automatically passed 
+      to fallback file-loader when image file size exceeds specified limit.
+        limit: byte limit
+        name: fallback path where files exceeding size limit should be copied
+      */
+      {
+        test: /\.(png|jpe?g|gif)$/,
+        loader: 'url-loader?limit=8000&name=images/[name].[ext]',
       },
     ],
   },
