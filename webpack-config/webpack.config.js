@@ -18,6 +18,10 @@ module.exports = {
     */
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
+    /*
+    Support lazy-loading / code-splitting
+    */
+    chunkFilename: '[id].js',
     publicPath: '',
   },
   /*
