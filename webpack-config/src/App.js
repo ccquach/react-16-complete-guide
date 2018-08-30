@@ -15,7 +15,7 @@ class App extends Component {
         </div>
         <div>
           <Route path="/" exact component={Users} />
-          <route path="/pizza" component={AsyncPizza} />
+          <Route path="/pizza" component={AsyncPizza} />
         </div>
       </div>
     );
