@@ -9,7 +9,7 @@ import List from './components/List/List';
 class App extends Component {
   state = {
     modalIsOpen: false,
-    showBlock: true,
+    showBlock: false,
   };
 
   showModal = () => this.setState({ modalIsOpen: true });
@@ -47,14 +47,17 @@ class App extends Component {
             />
           )}
         </Transition>
-        {/* <Modal show={this.state.modalIsOpen} closed={this.closeModal} />
-        <Backdrop show={this.state.modalIsOpen} /> */}
-        {/* {this.state.modalIsOpen ? (
-          <Modal show={this.state.modalIsOpen} closed={this.closeModal} />
-        ) : null}
-        {this.state.modalIsOpen ? (
-          <Backdrop show={this.state.modalIsOpen} />
-        ) : null} */}
+
+        <Transition
+          in={this.state.modalIsOpen}
+          timeout={300}
+          mountOnEnter
+          unmountOnExit
+        >
+          {state => <Modal show={state} closed={this.closeModal} />}
+        </Transition>
+        {this.state.modalIsOpen ? <Backdrop show /> : null}
+
         <button className="Button" onClick={this.showModal}>
           Open Modal
         </button>
