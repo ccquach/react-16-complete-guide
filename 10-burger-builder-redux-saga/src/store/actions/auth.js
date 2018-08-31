@@ -1,20 +1,20 @@
 import * as actionTypes from './actionTypes';
-import axios from 'axios';
 
+import axios from 'axios';
 const BASE_URL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty';
 const API_KEY = process.env.REACT_APP_API_KEY;
 
-const authStart = () => ({
+export const authStart = () => ({
   type: actionTypes.AUTH_START,
 });
 
-const authSuccess = (idToken, localId) => ({
+export const authSuccess = (idToken, localId) => ({
   type: actionTypes.AUTH_SUCCESS,
   idToken,
   userId: localId,
 });
 
-const authFail = error => ({
+export const authFail = error => ({
   type: actionTypes.AUTH_FAIL,
   error,
 });
@@ -27,31 +27,17 @@ export const authLogoutSucceed = () => ({
   type: actionTypes.AUTH_LOGOUT,
 });
 
-const checkAuthTimeout = expirationTime => ({
+export const checkAuthTimeout = expirationTime => ({
   type: actionTypes.AUTH_CHECK_TIMEOUT,
   expirationTime,
 });
 
-export const auth = (email, password, isSignup) => dispatch => {
-  dispatch(authStart());
-  const authData = { email, password, returnSecureToken: true };
-  let url = isSignup
-    ? `${BASE_URL}/signupNewUser?key=${API_KEY}`
-    : `${BASE_URL}/verifyPassword?key=${API_KEY}`;
-  axios
-    .post(url, authData)
-    .then(res => {
-      const { idToken, localId, expiresIn } = res.data;
-      localStorage.setItem('token', idToken);
-      const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
-      localStorage.setItem('expirationDate', expirationDate);
-      dispatch(authSuccess(idToken, localId));
-      dispatch(checkAuthTimeout(expiresIn));
-    })
-    .catch(err => {
-      dispatch(authFail(err.response.data.error));
-    });
-};
+export const auth = (email, password, isSignup) => ({
+  type: actionTypes.AUTH_USER,
+  email,
+  password,
+  isSignup,
+});
 
 export const setAuthRedirectPath = path => ({
   type: actionTypes.SET_AUTH_REDIRECT_PATH,
