@@ -19,12 +19,9 @@ const authFail = error => ({
   error,
 });
 
-export const authLogout = () => {
-  localStorage.clear();
-  return {
-    type: actionTypes.AUTH_LOGOUT,
-  };
-};
+export const authLogout = () => ({
+  type: actionTypes.AUTH_INITIATE_LOGOUT,
+});
 
 const checkAuthTimeout = expirationTime => dispatch => {
   setTimeout(() => {
