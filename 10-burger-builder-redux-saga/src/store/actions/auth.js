@@ -27,11 +27,10 @@ export const authLogoutSucceed = () => ({
   type: actionTypes.AUTH_LOGOUT,
 });
 
-const checkAuthTimeout = expirationTime => dispatch => {
-  setTimeout(() => {
-    dispatch(authLogout());
-  }, expirationTime * 1000);
-};
+const checkAuthTimeout = expirationTime => ({
+  type: actionTypes.AUTH_CHECK_TIMEOUT,
+  expirationTime,
+});
 
 export const auth = (email, password, isSignup) => dispatch => {
   dispatch(authStart());
