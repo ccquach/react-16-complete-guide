@@ -1,5 +1,5 @@
 import { delay } from 'redux-saga';
-import { put } from 'redux-saga/effects';
+import { put, all } from 'redux-saga/effects';
 import axios from 'axios';
 
 import * as actions from '../actions';
@@ -33,8 +33,10 @@ export function* authUserSaga(action) {
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     localStorage.setItem('token', idToken);
     localStorage.setItem('expirationDate', expirationDate);
-    yield put(actions.authSuccess(idToken, localId));
-    yield put(actions.checkAuthTimeout(expiresIn));
+    yield all([
+      put(actions.authSuccess(idToken, localId)),
+      put(actions.checkAuthTimeout(expiresIn)),
+    ]);
   } catch (err) {
     yield put(actions.authFail(err.response.data.error));
   }
@@ -52,10 +54,10 @@ export function* authCheckStateSaga(action) {
           { idToken: token }
         );
         const localId = res.data.users[0].localId;
-        yield put(actions.authSuccess(token, localId));
-        yield put(
-          actions.checkAuthTimeout((expirationDate - new Date()) / 1000)
-        );
+        yield all([
+          put(actions.authSuccess(token, localId)),
+          put(actions.checkAuthTimeout((expirationDate - new Date()) / 1000)),
+        ]);
       } catch (err) {
         return;
       }

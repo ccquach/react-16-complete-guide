@@ -1,4 +1,4 @@
-import { takeEvery, all } from 'redux-saga/effects';
+import { takeEvery, takeLatest, all } from 'redux-saga/effects';
 
 import * as actionTypes from '../actions/actionTypes';
 import {
@@ -22,7 +22,7 @@ const watchBurgerBuilder = [
 ];
 
 const watchOrder = [
-  takeEvery(actionTypes.PURCHASE_BURGER, purchaseBurgerSaga),
+  takeLatest(actionTypes.PURCHASE_BURGER, purchaseBurgerSaga),
   takeEvery(actionTypes.FETCH_ORDERS, fetchOrdersSaga),
 ];
 
