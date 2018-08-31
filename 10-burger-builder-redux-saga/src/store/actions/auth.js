@@ -1,9 +1,5 @@
 import * as actionTypes from './actionTypes';
 
-import axios from 'axios';
-const BASE_URL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty';
-const API_KEY = process.env.REACT_APP_API_KEY;
-
 export const authStart = () => ({
   type: actionTypes.AUTH_START,
 });
@@ -44,24 +40,6 @@ export const setAuthRedirectPath = path => ({
   path,
 });
 
-export const authCheckState = () => dispatch => {
-  const token = localStorage.getItem('token');
-  if (!token) dispatch(authLogout());
-  else {
-    /* 
-    localStorage returns items as strings, so need to convert expiration date 
-    to date type in order to make valid comparisons
-    */
-    const expirationDate = new Date(localStorage.getItem('expirationDate'));
-    if (expirationDate > new Date()) {
-      axios
-        .post(`${BASE_URL}/getAccountInfo?key=${API_KEY}`, { idToken: token })
-        .then(res => {
-          const localId = res.data.users[0].localId;
-          dispatch(authSuccess(token, localId));
-          dispatch(checkAuthTimeout((expirationDate - new Date()) / 1000));
-        })
-        .catch(err => {});
-    } else dispatch(authLogout());
-  }
-};
+export const authCheckState = () => ({
+  type: actionTypes.AUTH_CHECK_STATE,
+});

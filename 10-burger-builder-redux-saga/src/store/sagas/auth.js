@@ -39,3 +39,26 @@ export function* authUserSaga(action) {
     yield put(actions.authFail(err.response.data.error));
   }
 }
+
+export function* authCheckStateSaga(action) {
+  const token = localStorage.getItem('token');
+  if (!token) yield put(actions.authLogout());
+  else {
+    const expirationDate = new Date(localStorage.getItem('expirationDate'));
+    if (expirationDate > new Date()) {
+      try {
+        const res = yield axios.post(
+          `${BASE_URL}/getAccountInfo?key=${API_KEY}`,
+          { idToken: token }
+        );
+        const localId = res.data.users[0].localId;
+        yield put(actions.authSuccess(token, localId));
+        yield put(
+          actions.checkAuthTimeout((expirationDate - new Date()) / 1000)
+        );
+      } catch (err) {
+        return;
+      }
+    } else yield put(actions.authLogout());
+  }
+}
