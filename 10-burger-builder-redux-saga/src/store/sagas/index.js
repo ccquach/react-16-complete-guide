@@ -8,6 +8,7 @@ import {
   authCheckStateSaga,
 } from './auth';
 import { initIngredientsSaga } from './burgerBuilder';
+import { purchaseBurgerSaga, fetchOrdersSaga } from './order';
 
 const watchAuth = [
   takeEvery(actionTypes.AUTH_INITIATE_LOGOUT, authLogoutSaga),
@@ -20,6 +21,11 @@ const watchBurgerBuilder = [
   takeEvery(actionTypes.INIT_INGREDIENTS, initIngredientsSaga),
 ];
 
+const watchOrder = [
+  takeEvery(actionTypes.PURCHASE_BURGER, purchaseBurgerSaga),
+  takeEvery(actionTypes.FETCH_ORDERS, fetchOrdersSaga),
+];
+
 export default function* watchAll() {
-  yield all([...watchAuth, ...watchBurgerBuilder]);
+  yield all([...watchAuth, ...watchBurgerBuilder, ...watchOrder]);
 }
